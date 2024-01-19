@@ -11,6 +11,8 @@ const todosSlice = createSlice({
   name: "todos",
   initialState: {
     list: [],
+    prevList: [],
+    todoDone: [],
     status: "pending",
   },
   reducers: {
@@ -21,9 +23,16 @@ const todosSlice = createSlice({
       state.list = state.list.filter((todo) => todo.id !== action.payload);
     },
     filterTodos: (state, action) => {
+      state.prevList = state.list;
       state.list = state.list.filter((todo) =>
         todo.title.toLowerCase().includes(action.payload.toLowerCase())
       );
+    },
+    clearSearchFilter: (state) => {
+      state.list = state.prevList;
+    },
+    addTodoDone: (state, action) => {
+      state.todoDone.push(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -34,6 +43,12 @@ const todosSlice = createSlice({
   },
 });
 
-export const { addTodo, removeTodo, filterTodos } = todosSlice.actions;
+export const {
+  addTodo,
+  removeTodo,
+  filterTodos,
+  clearSearchFilter,
+  addTodoDone,
+} = todosSlice.actions;
 
 export default todosSlice.reducer;
